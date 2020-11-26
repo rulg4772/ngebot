@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
 const { v4: uuidv4 } = require('uuid');
 const readlineSync = require('readline-sync');
-var random = require('random-name')
+var random = require('random-name');
+const { send } = require('process');
 //1976244
 const functionSendOtp = (nomor, key, reff) => new Promise((resolve, reject) => {
     const bodys = {
@@ -145,8 +146,8 @@ const functionNominal = (kontak, time, key, token, bisnisId) => new Promise((res
 });
 
 (async () => {
+    const reff = parseInt(readlineSync.question('[?] Reff: '))
     for (var j = 0; j < 10; j++){
-        const reff = readlineSync.question('[?] Reff: ')
     try {
         var time = new Date().toISOString()
         var nomor = readlineSync.question('[?] NOMOR: ')
@@ -156,7 +157,6 @@ const functionNominal = (kontak, time, key, token, bisnisId) => new Promise((res
             const otp = readlineSync.question('[?] OTP: ')
             const verifOtp = await functionVerifOtp(otp, nomor, uuidv4())
             var token = verifOtp.data.verifyOtp.token
-            const reff = verifOtp.data.verifyOtp.user.id
             if (verifOtp.data.verifyOtp.token != ''){
                 console.log('[+] Sukses Login !')
                 const buka = await functionBuka(nomor, uuidv4(), token)
